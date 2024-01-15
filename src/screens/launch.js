@@ -1,28 +1,33 @@
-import { StyleSheet, ImageBackground, Text, Image, View } from 'react-native';
+import { StyleSheet, ImageBackground, Button, Image, View } from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-const Launch = () => {
+import FilledGreenButton from '../components/button-green-filled';
+import Logo from '../components/logo';
+import { } from '@expo-google-fonts/dm-sans'
+const Launch = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
-            <ImageBackground style={styles.background}>
-                <Image source={require('../../assets/headphoneImg.png')} style={styles.logo} />
-            </ImageBackground>
+            <View>
+                <Logo width={125} height={125} />
+            </View>
+            <FilledGreenButton text="Login" onPress={() => { onLoginPress(navigation) }} />
+            <FilledGreenButton text="Sign Up" onPress={() => { onSignUpPress(navigation) }} />
         </SafeAreaView>
     )
 }
 export default Launch;
+function onLoginPress(navigation) {
+    navigation.navigate('Login');
+}
 
+function onSignUpPress(navigation) {
+    navigation.navigate('SignUp');
+}
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-    },
-    background: {
-        backgroundColor: "#080B19", // Fixed the backgroundColor value
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
     },
-    logo: {
-    }
 });
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet, Pressable } from 'react-native';
 
-export default function FilledGreenButton({ text, onPress, style }) {
+export default function FilledButton({ text, onPress, style }) {
     return (
         <Pressable style={[styles.button, style]} onPress={onPress}>
             <Text style={styles.text}>{text}</Text>

@@ -1,11 +1,14 @@
-
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TextBox from '../components/textBox'
 import Logo from '../components/logo';
-import FilledGreenButton from '../components/button-green-filled';
+import FilledButton from '../components/buttonFilled.js';
+import { AuthContext } from '../context/authContext.js';
 const Login = () => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const { login } = useContext(AuthContext);
     return (
         <SafeAreaView style={styles.login}>
             <View style={styles.topBar}>
@@ -16,10 +19,10 @@ const Login = () => {
             </View>
             <View style={styles.inputs}>
                 <Text style={[styles.text, styles.suggestions]}>Username</Text>
-                <TextBox />
+                <TextBox secureText={false} onChangeText={setUsername} value={username} />
                 <Text style={[styles.text, styles.suggestions]} >Password</Text>
-                <TextBox />
-                <FilledGreenButton text="Log In" />
+                <TextBox secureText={true} onChangeText={setPassword} value={password} />
+                <FilledButton text="Log In" onPress={() => login(username, password)} />
             </View>
         </SafeAreaView>
     )

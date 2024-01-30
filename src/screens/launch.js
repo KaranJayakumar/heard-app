@@ -1,28 +1,30 @@
 import { StyleSheet, ImageBackground, Button, Image, View } from 'react-native';
-import React from 'react';
+import React, { useContext } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import FilledGreenButton from '../components/button-green-filled';
+import FilledButton from '../components/buttonFilled.js';
 import Logo from '../components/logo';
 import { } from '@expo-google-fonts/dm-sans'
+import { AuthContext } from '../context/authContext.js';
 const Launch = ({ navigation }) => {
+    const { login } = useContext(AuthContext);
+    const navigateToSignUp = () => {
+        navigation.navigate('SignUp'); // Replace 'SignUpScreen' with the actual name of your sign-up screen
+    };
+    const navigateToLogin = () => {
+        navigation.navigate('Login'); // Replace 'SignUpScreen' with the actual name of your sign-up screen
+    };
     return (
         <SafeAreaView style={styles.container}>
             <View>
                 <Logo width={125} height={125} />
             </View>
-            <FilledGreenButton text="Login" onPress={() => { onLoginPress(navigation) }} />
-            <FilledGreenButton text="Sign Up" onPress={() => { onSignUpPress(navigation) }} />
+            <FilledButton text="Login" onPress={navigateToLogin} />
+            <FilledButton text="Sign Up" onPress={navigateToSignUp} />
         </SafeAreaView>
     )
 }
 export default Launch;
-function onLoginPress(navigation) {
-    navigation.navigate('Login');
-}
-
-function onSignUpPress(navigation) {
-    navigation.navigate('SignUp');
-}
+//Flow : 
 const styles = StyleSheet.create({
     container: {
         flex: 1,

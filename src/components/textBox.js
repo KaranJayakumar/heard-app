@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { TextInput, StyleSheet } from "react-native";
 
-const TextBox = () => {
+const TextBox = ({ secureText, required, onChangeText, value }) => {
     const [isFocused, setFocused] = useState(false);
-    const [text, onChangeText] = useState('');
-
     const styles = StyleSheet.create({
         input: {
             height: 40,
@@ -23,9 +21,9 @@ const TextBox = () => {
             style={styles.input}
             caretHidden={true}
             onFocus={() => setFocused(true)}
-            on
             onChangeText={onChangeText}
-            value={text}
+            value={value}
+            secureTextEntry={secureText}
         />
     );
 }

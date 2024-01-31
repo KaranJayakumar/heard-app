@@ -1,4 +1,4 @@
-import { StyleSheet, ImageBackground, Button, Image, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import React, { useContext } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FilledButton from '../components/buttonFilled.js';

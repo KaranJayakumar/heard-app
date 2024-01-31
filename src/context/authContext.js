@@ -1,25 +1,19 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import * as SecureStore from 'expo-secure-store';
 export const AuthContext = createContext();
-const API_URL = "https://api.developbetterapps.com/";
+import { firebaseAuth } from "../firebaseSetup/firebase";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import axios from "axios";
 export const AuthProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
-    const [authState, setAuthState] = useState({
-        token: null,
-        authState: null,
-    });
+    const [user, setUser] = useState(null);
+    const auth = firebaseAuth;
     const login = async (username, password) => {
         console.log(username);
         try {
             setIsLoading(true);
-            const result = await axios.post(`${API_URL}/auth`, { username, password });
-            setAuthState({
-                token: result.data.token,
-                authenticated: true,
-            })
-            axios.defaults.headers.common['Auth'] = 'Bearer ${result.data.token}';
-            await SecureStore.setItemAsync('USER_TOKEN', 'jaksdlf');
+            const result = signInWithEmailAndPassword(auth, username, password);
+            setUser(username);
             setIsLoading(false);
         } catch (e) {
             console.log("Error during Login Authentication");
@@ -28,38 +22,37 @@ export const AuthProvider = ({ children }) => {
     }
     const logout = async () => {
         setIsLoading(true);
-        setAuthState({
-            token: null,
-            authenticated: null,
-        })
-        axios.defaults.headers.common['Auth'] = '';
-        await SecureStore.deleteItemAsync('USER_TOKEN');
+        try {
+            setIsLoading(true);
+            firebaseAuth.signOut()
+            setUser(null);
+            console.log("Signed Out")
+        } catch (e) {
+            console.log("Error while Signing Out");
+            console.log(e)
+        }
+
         setIsLoading(false);
     }
 
     const register = async (username, password) => {
         try {
-            return await axios.post('${API_URL}/users', { username, password });
+            const response = createUserWithEmailAndPassword(auth, username, password);
         } catch (e) {
             console.log("Error during registration");
             console.log(e);
         }
     }
 
-    const isLoggedIn = async () => {
+    const checkAuth = async () => {
         try {
             setIsLoading(true);
-            let storedUserToken = await SecureStore.getItemAsync('USER_TOKEN');
-            if (storedUserToken) {
-                axios.defaults.headers.common['Auth'] = 'Bearer ${result.data.token}';
-                setAuthState({
-                    token: storedUserToken,
-                    authenticated: true,
-                });
-            }
-            else {
-                return;
-            }
+            const auth = firebaseAuth.onAuthStateChanged(firebaseAuth, (user) => {
+                if (user) {
+                    setUser(user);
+                }
+            });
+            setIsLoading(false);
         }
         catch (e) {
             console.log("Error during checking if Logged In.");
@@ -68,11 +61,11 @@ export const AuthProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        isLoggedIn();
+        checkAuth();
     }, [])
 
     return (
-        <AuthContext.Provider value={{ authState, login, logout, register }}>
+        <AuthContext.Provider value={{ user, login, logout, register }}>
             {children}
         </AuthContext.Provider>
     )

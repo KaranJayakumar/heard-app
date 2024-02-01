@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { View } from 'react-native';
-import { NavigationContainer, DarkTheme } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { StyleSheet } from 'react-native';
 import { AuthContext } from "../context/authContext";
 import AppStack from "./appStack";
@@ -18,11 +18,11 @@ const MyTheme = {
     },
 };
 const AppNav = () => {
-    const { user } = useContext(AuthContext);
+    const { session } = useContext(AuthContext);
     return (
         <View style={styles.backgroundView}>
             <NavigationContainer theme={MyTheme}>
-                {user !== null ? <AppStack /> : <AuthStack />}
+                {session !== null ? <AppStack /> : <AuthStack />}
             </NavigationContainer>
         </View>
     );

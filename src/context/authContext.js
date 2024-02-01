@@ -1,69 +1,104 @@
 import { createContext, useEffect, useState } from "react";
-import { firebaseAuth } from "../firebaseSetup/firebase";
-import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { supabase } from "../backendSetup/supabase";
+
+export const AuthContext = createContext();
+
 export const AuthProvider = ({ children }) => {
-
     const [isLoading, setIsLoading] = useState(true);
-    const [user, setUser] = useState(null);
-    const auth = firebaseAuth;
+    const [session, setSession] = useState(null);
 
-    const login = async (username, password) => {
-        console.log(username);
-
+    const login = async (email, password) => {
         try {
             setIsLoading(true);
-            const result = await signInWithEmailAndPassword(auth, username, password);
-            setUser(username);
-            setIsLoading(false);
-        } catch (e) {
-            console.log("Error during Login Authentication");
-            console.log(e);
-        }
+            const { data, error } = await supabase.auth.signIn({
+                email: email,
+                password: password,
+            });
 
-    }
+            if (error) {
+                throw error;
+            }
+
+            setSession(data.session);
+        } catch (e) {
+            console.error("Error during Login Authentication");
+            console.error(e);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const logout = async () => {
-        setIsLoading(true);
-
         try {
             setIsLoading(true);
-            firebaseAuth.signOut()
-            setUser(null);
-            console.log("Signed Out")
+            await supabase.auth.signOut();
+            setSession(null);
+            console.log("Signed Out");
         } catch (e) {
-            console.log("Error while Signing Out");
-            console.log(e)
+            console.error("Error while Signing Out");
+            console.error(e);
+        } finally {
+            setIsLoading(false);
         }
+    };
 
-        setIsLoading(false);
-    }
-
-    const register = async (username, password) => {
-
+    const register = async (email, password) => {
         try {
-            const response = await createUserWithEmailAndPassword(auth, username, password);
+            const { data, error } = await supabase.auth.signUp({
+                email: email,
+                password: password,
+            });
+
+            if (error) {
+                throw error;
+            }
+
+            setSession(data.session);
         } catch (e) {
-            console.log("Error during registration");
-            console.log(e);
+            console.error("Error during registration");
+            console.error(e);
         }
-
-    }
-
+    };
 
     useEffect(() => {
-        setIsLoading(true);
-        onAuthStateChanged(firebaseAuth, (user) => {
-            if (user) {
-                setUser(user);
+        const restoreSession = async () => {
+            try {
+                setIsLoading(true);
+                const { data, error } = await supabase.auth.getSession();
+
+                if (error) {
+                    throw error;
+                }
+
+                if (data) {
+                    setSession(data.session);
+                }
+            } catch (e) {
+                console.error("Error restoring session");
+                console.error(e);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        restoreSession();
+
+        const authListener = supabase.auth.onAuthStateChange((event, session) => {
+            console.log(event, session);
+            if (event === "SIGNED_OUT") {
+                setSession(null);
             }
         });
-        setIsLoading(false);
-    }, [user])
+
+        return () => {
+            authListener.unsubscribe();
+        };
+    }, []);
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, register }}>
+        <AuthContext.Provider value={{ session, login, logout, register }}>
             {children}
         </AuthContext.Provider>
-    )
-}
-export const AuthContext = createContext();
+    );
+};
+

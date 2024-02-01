@@ -19,8 +19,9 @@ const TextBox = ({ secureText, required, onChangeText, value }) => {
     return (
         <TextInput
             style={styles.input}
-            caretHidden={true}
+            selectionColor={'white'}
             onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
             onChangeText={onChangeText}
             value={value}
             secureTextEntry={secureText}

@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
     const login = async (email, password) => {
         try {
             setIsLoading(true);
-            const { data, error } = await supabase.auth.signIn({
+            const { data, error } = await supabase.auth.signInWithPassword({
                 email: email,
                 password: password,
             });
@@ -52,7 +52,6 @@ export const AuthProvider = ({ children }) => {
             if (error) {
                 throw error;
             }
-
             setSession(data.session);
         } catch (e) {
             console.error("Error during registration");

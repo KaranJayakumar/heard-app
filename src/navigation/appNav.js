@@ -5,6 +5,7 @@ import { StyleSheet } from 'react-native';
 import { AuthContext } from "../context/authContext";
 import AppStack from "./appStack";
 import AuthStack from './authStack';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const MyTheme = {
     dark: true,
@@ -22,17 +23,26 @@ const AppNav = () => {
     return (
         <View style={styles.backgroundView}>
             <NavigationContainer theme={MyTheme}>
-                {session !== null ? <AppStack /> : <AuthStack />}
+                <SafeAreaView style={styles.safeView}>
+                    <View style={styles.appContainer}>
+                        {session !== null ? <AppStack /> : <AuthStack />}
+                    </View>
+                </SafeAreaView>
             </NavigationContainer>
         </View>
     );
 };
+export default AppNav;
 const styles = StyleSheet.create({
     backgroundView: {
         flex: 1,
         backgroundColor: '#080B19',
     },
+    safeView: {
+        flex: 1,
+    },
+    appContainer: {
+        flex: 1,
+        paddingHorizontal: 30,
+    }
 })
-
-export default AppNav;
-

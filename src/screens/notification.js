@@ -6,7 +6,7 @@ import FilledButton from '../components/buttonFilled.js';
 import { } from '@expo-google-fonts/dm-sans'
 import Logo from '../components/logo.js';
 import { AuthContext } from '../context/authContext.js';
-const Home = () => {
+const Notifications = () => {
     const { logout } = useContext(AuthContext);
     return (
         <View style={styles.home}>
@@ -25,7 +25,7 @@ const Home = () => {
         </View>
     )
 }
-export default Home;
+export default Notifications;
 const styles = StyleSheet.create({
     home: {
         flex: 1,
@@ -46,4 +46,5 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
 });
+
 

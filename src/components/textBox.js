@@ -6,10 +6,10 @@ const TextBox = ({ secureText, required, onChangeText, value }) => {
     const styles = StyleSheet.create({
         input: {
             height: 40,
-            width: 385,
-            margin: 10,
+            width: 370,
+            marginVertical: 15,
+            paddingLeft: 10,
             borderWidth: 1,
-            padding: 10,
             borderColor: isFocused ? '#23FF39' : '#F7FFFF',
             borderRadius: 7,
             color: '#F7FFFF',

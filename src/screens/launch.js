@@ -26,6 +26,10 @@ const Launch = ({ navigation }) => {
 export default Launch;
 //Flow : 
 const styles = StyleSheet.create({
+    paddedContainer: {
+        flex: 1,
+        paddingHorizontal: 30,
+    },
     container: {
         flex: 1,
         alignItems: "center",

@@ -21,15 +21,11 @@ const MyTheme = {
 const AppNav = () => {
     const { session } = useContext(AuthContext);
     return (
-        <View style={styles.backgroundView}>
             <NavigationContainer theme={MyTheme}>
                 <SafeAreaView style={styles.safeView}>
-                    <View style={styles.appContainer}>
-                        {session !== null ? <AppStack /> : <AuthStack />}
-                    </View>
+                    {session !== null ? <AppStack /> : <AuthStack />}
                 </SafeAreaView>
             </NavigationContainer>
-        </View>
     );
 };
 export default AppNav;
@@ -41,8 +37,4 @@ const styles = StyleSheet.create({
     safeView: {
         flex: 1,
     },
-    appContainer: {
-        flex: 1,
-        paddingHorizontal: 30,
-    }
 })

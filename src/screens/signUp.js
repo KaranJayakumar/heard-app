@@ -12,7 +12,7 @@ const Login = () => {
     const [repeatPassword, setRepeatPassword] = useState('');
     const { register } = useContext(AuthContext);
     return (
-        <SafeAreaView style={styles.login}>
+        <View style={styles.paddedContainer}>
             <View style={styles.topBar}>
                 <Logo style={styles.logo} height={60} width={60} />
                 <Text style={[styles.text, styles.loginText]}>
@@ -28,23 +28,19 @@ const Login = () => {
                 <TextBox onChangeText={setPassword} value={password} secureText={true} />
                 <Text style={[styles.text, styles.suggestions]} >Confirm Password</Text>
                 <TextBox onChangeText={setRepeatPassword} value={repeatPassword} secureText={true} />
-                <FilledButton text="Sign Up" onPress={() => { register(username, password) }} />
+                <FilledButton style={styles.submit} text="Sign Up" onPress={() => { register(username, password) }} />
             </View>
-        </SafeAreaView>
+        </View>
     )
 }
 const styles = StyleSheet.create({
+    paddedContainer: {
+        flex: 1,
+        paddingHorizontal: 30,
+    },
     loginText: {
         fontSize: 18,
         alignSelf: 'center',
-    },
-    login: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        marginLeft: 30,
-        marginRight: 30,
-        marginTop: 20,
     },
     topBar: {
         flexDirection: 'row',
@@ -59,11 +55,11 @@ const styles = StyleSheet.create({
     text: {
         color: '#F7FFFF',
     },
-    suggestions: {
-        alignSelf: 'flex-start',
-    },
     inputs: {
-        alignItems: 'center'
+        alignItems: 'flex-start',
+    },
+    submit: {
+        alignSelf: 'center',
     }
 });
 export default Login;

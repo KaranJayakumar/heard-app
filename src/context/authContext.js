@@ -82,16 +82,13 @@ export const AuthProvider = ({ children }) => {
 
         restoreSession();
 
-        const authListener = supabase.auth.onAuthStateChange((event, session) => {
+        supabase.auth.onAuthStateChange((event, session) => {
             console.log(event, session);
             if (event === "SIGNED_OUT") {
                 setSession(null);
             }
         });
 
-        return () => {
-            authListener.unsubscribe();
-        };
     }, []);
 
     return (

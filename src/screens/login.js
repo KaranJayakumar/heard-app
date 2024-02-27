@@ -10,29 +10,35 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const { login } = useContext(AuthContext);
     return (
-        <View style={styles.login}>
-            <View style={styles.topBar}>
-                <Logo style={styles.logo} height={60} width={60} />
-                <Text style={[styles.text, styles.loginText]}>
-                    Log In
-                </Text>
-            </View>
-            <View style={styles.inputs}>
-                <Text style={[styles.text, styles.suggestions]}>Username</Text>
+        <View style={styles.paddedContainer}>
+            <View style={styles.login}>
+                <View style={styles.topBar}>
+                    <Logo style={styles.logo} height={60} width={60} />
+                    <Text style={[styles.text, styles.loginText]}>
+                        Log In
+                    </Text>
+                </View>
+                <View style={styles.inputs}>
+                    <Text style={[styles.text, styles.suggestions]}>Username</Text>
 
-                <TextBox secureText={false} onChangeText={setUsername} value={username} />
+                    <TextBox secureText={false} onChangeText={setUsername} value={username} />
 
-                <Text style={[styles.text, styles.suggestions]} >Password</Text>
+                    <Text style={[styles.text, styles.suggestions]} >Password</Text>
 
-                <TextBox secureText={true} onChangeText={setPassword} value={password} />
+                    <TextBox secureText={true} onChangeText={setPassword} value={password} />
 
-                <FilledButton text="Log In" style={styles.loginButton} onPress={() => login(username, password)} />
+                    <FilledButton text="Log In" style={styles.loginButton} onPress={() => login(username, password)} />
+                </View>
             </View>
         </View>
     )
 }
 export default Login;
 const styles = StyleSheet.create({
+    paddedContainer: {
+        flex: 1,
+        paddingHorizontal: 30,
+    },
     login: {
         flex: 1,
         flexDirection: 'column',

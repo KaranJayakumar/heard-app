@@ -4,7 +4,11 @@ import { View, Text } from 'react-native';
 import { } from '@expo-google-fonts/dm-sans'
 const NewPost = () => {
     return (
-        <View style={{flex : 1, backgroundColor : 'blue'}}>
+        <View>
+            <View>
+            </View>
+            <View>
+            </View>
         </View>
     )
 }
